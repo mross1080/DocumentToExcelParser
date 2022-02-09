@@ -23,13 +23,9 @@ while index < len(paragraphs):
     # NEW SECTION 
     if current_row.isupper() and current_row[1] == ".":
         current_section = (row.text)
-        # current_phase = ""
-        # current_title = ""
-        # spreadsheet_rows.append(["NEW_SECTION", current_section, "",""])
-        # index+=1
+
     elif current_row.isupper():
         if "PHASE" in current_row:
-        # print(current_row)
             current_phase = current_row
         else:
             current_title = (row.text)
@@ -41,7 +37,6 @@ while index < len(paragraphs):
         if current_row != "":
             spreadsheet_rows.append([current_section, current_phase, current_title, current_row])
     index+=1
-    # text = row.cells[1].text.strip()
 
 row = 0
 col = 0
