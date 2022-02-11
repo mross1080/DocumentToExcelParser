@@ -19,6 +19,7 @@ for filename in all_docs:
     current_title = ""
 
     spreadsheet_rows = []
+    print("parsing documents")
     while index < len(paragraphs):
         row = paragraphs[index]
         # NEW SECTION
@@ -43,11 +44,6 @@ for filename in all_docs:
             else:
                 current_title = (row.text)
         else:
-            if (current_row.count("{") >= 1 or current_title.count("{") >= 1):
-                print('current_row:', current_row)
-                print('current_section: ', current_section)
-                print('current_title: ', current_title)
-
                         #Normal Content
             if (current_row != "" and current_section != ""):
 
