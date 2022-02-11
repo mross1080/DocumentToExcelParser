@@ -3,6 +3,7 @@ from docx.shared import Pt
 from docx.enum.style import WD_STYLE_TYPE
 import xlsxwriter
 import os
+import json
 
 all_docs = os.listdir('documents/')
 for filename in all_docs:
@@ -20,9 +21,10 @@ for filename in all_docs:
     spreadsheet_rows = []
     while index < len(paragraphs):
         row = paragraphs[index]
-
-        current_row = row.text.strip()
         # NEW SECTION
+        current_row = row.text.strip()
+#        current_row = current_row.replace('“', '').replace('”', '')
+
         if len(current_row) > 1 and current_row[1] == ".":
             prev_section = current_section
             current_section = (row.text)
@@ -32,7 +34,7 @@ for filename in all_docs:
                 prinent_title = ''
                 current_phase = ''
                 current_row = ' foo '
-        elif current_row.isupper() and current_row != "":
+        elif (current_row != "") and (current_row.isupper() and current_row[0] != "{" ):
             prev_section = current_section
             if "[PHASE NOTE]" in current_row:
                 current_title = (row.text)
@@ -41,8 +43,14 @@ for filename in all_docs:
             else:
                 current_title = (row.text)
         else:
+            if (current_row.count("{") >= 1 or current_title.count("{") >= 1):
+                print('current_row:', current_row)
+                print('current_section: ', current_section)
+                print('current_title: ', current_title)
+
                         #Normal Content
-            if current_row != "" and current_section != "":
+            if (current_row != "" and current_section != ""):
+
                 spreadsheet_rows.append([current_section, current_phase, current_title, current_row])
                 # edge case with empty section start
             elif prev_section != current_section and current_section.count(".") == 1:
@@ -70,14 +78,16 @@ for filename in all_docs:
             cell_format = workbook.add_format({'bold': True, 'italic': False})
             cell_format.set_align('center')
             cell_format.set_align('vcenter')
-            cell_format.set_font_color('#C04ABC')
             if (section.count(".") == 1):
                 cell_format.set_bg_color("#f7f797")
-            worksheet.set_row(row, 25, cell_format)
+            cell_format.set_color('#eb34d2')
+            worksheet.set_row(row, 25)
             worksheet.write(row, col, section, cell_format)
             cell_format.set_align('left')
+            cell_format.set_color('#000000')
 
             worksheet.write(row, col+ 1, phase,cell_format)
+            cell_format = workbook.add_format({'bold': False})
 
             # Write Dev Notes
             cell_format.set_align('left')
