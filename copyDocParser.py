@@ -26,7 +26,7 @@ for filename in all_docs:
         current_row = row.text.strip()
 #        current_row = current_row.replace('“', '').replace('”', '')
 
-        if len(current_row) > 1 and current_row[1] == ".":
+        if len(current_row) > 1 and current_row[1] == "." and current_row[2].isdigit():
             prev_section = current_section
             current_section = (row.text)
             if (prev_section == ""):
