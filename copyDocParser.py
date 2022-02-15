@@ -67,42 +67,43 @@ for filename in all_docs:
     row = 0
     col = 0
 
+    color_lookup = {"peach":"#fce5cd","light_green":"#d9ead3","white":"#000000","voiceover_grey":"#d0e0e3"}
+
     print("Writing spreadsheet")
+    
     # Iterate over the data and write it out row by row.
     cell_format = workbook.add_format({'bold': True, 'italic': False})
     worksheet.set_column(1, 4, 25)
+    
     for section, phase,  title, txt in (spreadsheet_rows):
-        if section == "NEW_SECTION":
-            cell_format.set_align('center')
-            cell_format.set_bg_color('#C04ABC')
-            worksheet.set_row(row, 25, cell_format)
-            if (title.count(".") == 1):
-                cell_format.set_bg_color("#f7f797")
-            worksheet.write(row, phase,"","")
+
+        cell_format = workbook.add_format({'bold': True, 'italic': False})
+        cell_format.set_align('center')
+        cell_format.set_align('vcenter')
+        if (section.count(".") == 1):
+            # New Segement 
+            cell_format.set_bg_color(color_lookup["peach"])
         else:
-            cell_format = workbook.add_format({'bold': True, 'italic': False})
-            cell_format.set_align('center')
-            cell_format.set_align('vcenter')
-            if (section.count(".") == 1):
-                cell_format.set_bg_color("#f7f797")
-            cell_format.set_color('#eb34d2')
-            worksheet.set_row(row, 25)
-            worksheet.write(row, col, section, cell_format)
-            cell_format.set_align('left')
-            cell_format.set_color('#000000')
+            cell_format.set_color(color_lookup["white"])
+        worksheet.set_row(row, 25)
+        worksheet.write(row, col, section, cell_format)
+        cell_format.set_align('left')
+        
 
-            worksheet.write(row, col+ 1, phase,cell_format)
-            cell_format = workbook.add_format({'bold': False})
+        worksheet.write(row, col+ 1, phase,cell_format)
+        cell_format = workbook.add_format({'bold': False})
 
-            # Write Dev Notes
-            cell_format.set_align('left')
-            if ("[VO]" in title):
-                cell_format.set_bg_color("#6bdee8")
+        # Write Dev Notes
+        cell_format.set_align('left')
+        if ("[VO]" in title):
+            cell_format.set_bg_color(color_lookup["voiceover_grey"])
+        else:
+            cell_format.set_color(color_lookup["white"])
 
-            worksheet.set_row(row, 25, cell_format)
-            worksheet.write(row, col + 2, title,cell_format)
-            cell_format.set_text_wrap()
-            worksheet.write(row, col + 3, txt, cell_format)
+        worksheet.set_row(row, 25, cell_format)
+        worksheet.write(row, col + 2, title,cell_format)
+        cell_format.set_text_wrap()
+        worksheet.write(row, col + 3, txt, cell_format)
 #            cell_format = workbook.add_format({'bold': True, 'italic': False})
 
         worksheet.set_column(0, 3, 25)
