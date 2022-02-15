@@ -7,7 +7,7 @@ import json
 
 all_docs = os.listdir('documents/')
 for filename in all_docs:
-
+    print("FILE NAMNE", filename)
     doc = Document("documents/" + filename) # Create a workbook and add a worksheet.
     workbook = xlsxwriter.Workbook('sheets/' + filename.replace('.docx', '').replace(' ', '') + '_sheet.xlsx')
     worksheet = workbook.add_worksheet()
@@ -22,9 +22,16 @@ for filename in all_docs:
     print("parsing documents")
     while index < len(paragraphs):
         row = paragraphs[index]
+        
         # NEW SECTION
         current_row = row.text.strip()
-#        current_row = current_row.replace('“', '').replace('”', '')
+        # try:
+        #     print(index)
+        #     print(current_row)
+        # except Exception as e:
+        #     print(e)      
+        current_row = current_row.replace('“', '').replace('”', '')
+        
 
         if len(current_row) > 1 and current_row[1] == "." and current_row[2].isdigit():
             prev_section = current_section
@@ -35,7 +42,7 @@ for filename in all_docs:
                 prinent_title = ''
                 current_phase = ''
                 current_row = ' foo '
-        elif (current_row != "") and (current_row.isupper() and current_row[0] != "{" ):
+        elif (current_row != "") and (current_row.isupper() and current_row[0] != "<" and current_row[0] != "{" ):
             prev_section = current_section
             if "[PHASE NOTE]" in current_row:
                 current_title = (row.text)
@@ -46,6 +53,8 @@ for filename in all_docs:
         else:
                         #Normal Content
             if (current_row != "" and current_section != ""):
+                if ("<" in current_row):
+                    current_row = current_row.replace("<","").replace(">","")
 
                 spreadsheet_rows.append([current_section, current_phase, current_title, current_row])
                 # edge case with empty section start
