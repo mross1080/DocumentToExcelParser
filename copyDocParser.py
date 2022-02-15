@@ -68,20 +68,28 @@ for filename in all_docs:
     col = 0
 
     color_lookup = {"peach":"#fce5cd","light_green":"#d9ead3","white":"#000000","voiceover_grey":"#d0e0e3"}
-
+    headers = ["SEGMENT","PHASE", "[DEV NOTES]","COPY", "INTERACTIVE"]
     print("Writing spreadsheet")
-    
+    data_format1 = workbook.add_format({'bg_color': '#d9ead3'})
+    worksheet.set_row(row, cell_format=data_format1)
+
     # Iterate over the data and write it out row by row.
     cell_format = workbook.add_format({'bold': True, 'italic': False})
+    cell_format.set_bg_color(color_lookup["light_green"])
+    cell_format.set_align('vcenter')
+    worksheet.set_row(0, 60)
     worksheet.set_column(1, 4, 25)
-    
+    for index, name in enumerate(headers):
+        worksheet.write(row, index, name, cell_format)
+    row+=1
     for section, phase,  title, txt in (spreadsheet_rows):
-
+        
         cell_format = workbook.add_format({'bold': True, 'italic': False})
         cell_format.set_align('center')
         cell_format.set_align('vcenter')
         if (section.count(".") == 1):
             # New Segement 
+            worksheet.set_row(index, 40)
             cell_format.set_bg_color(color_lookup["peach"])
         else:
             cell_format.set_color(color_lookup["white"])
