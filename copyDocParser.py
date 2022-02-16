@@ -105,6 +105,7 @@ for filename in all_docs:
         cell_format.set_align('left')
         if ("[VO]" in title):
             cell_format.set_bg_color(color_lookup["voiceover_grey"])
+            worksheet.write(row, col + 4, "vo_file", cell_format)
         else:
             cell_format.set_color(color_lookup["white"])
 
