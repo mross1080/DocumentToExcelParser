@@ -32,8 +32,8 @@ for filename in all_docs:
         #     print(e)      
         current_row = current_row.replace('“', '').replace('”', '')
         
-
-        if len(current_row) > 1 and current_row[1] == "." and current_row[2].isdigit():
+        # Sue me for that last if statement
+        if len(current_row) > 1 and  (current_row[1] == "." and current_row[2].isdigit()) or ("12." in current_row ):
             prev_section = current_section
             current_section = (row.text)
             if (prev_section == ""):
